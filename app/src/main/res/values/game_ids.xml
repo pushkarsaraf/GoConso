@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_id -->
+    <string name="app_id" translatable="false">267755188052</string>
+    <!-- package_name -->
+    <string name="package_name" translatable="false">dev.pushkar.goconso</string>
+    <!-- achievement Prime -->
+    <string name="achievement_prime" translatable="false">CgkI1N7Pu-UHEAIQAQ</string>
+    <!-- achievement Humble -->
+    <string name="achievement_humble" translatable="false">CgkI1N7Pu-UHEAIQAg</string>
+    <!-- achievement Don't get cocky, kid -->
+    <string name="achievement_arrogant" translatable="false">CgkI1N7Pu-UHEAIQAw</string>
+    <!-- achievement OMG U R TEH UBER LEET! -->
+    <string name="achievement_leet" translatable="false">CgkI1N7Pu-UHEAIQBA</string>
+    <!-- achievement Bored -->
+    <string name="achievement_top" translatable="false">CgkI1N7Pu-UHEAIQBQ</string>
+    <!-- achievement Dont play alone -->
+    <string name="achievement_dont_play_alone" translatable="false">CgkI1N7Pu-UHEAIQBg</string>
+    <!-- achievement Bored -->
+    <string name="achievement_bored" translatable="false">CgkI1N7Pu-UHEAIQDA</string>
+    <!-- achievement Really Really Bored -->
+    <string name="achievement_really_bored" translatable="false">CgkI1N7Pu-UHEAIQDQ</string>
+    <!-- leaderboard ConsoBoard! -->
+    <string name="leaderboard_consoboard" translatable="false">CgkI1N7Pu-UHEAIQBw</string>
+    <!-- event TypeANumber -->
+    <string name="event_type_a_number" translatable="false">CgkI1N7Pu-UHEAIQCw</string>
+</resources>

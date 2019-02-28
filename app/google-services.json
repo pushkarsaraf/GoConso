@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "267755188052",
+    "firebase_url": "https://goconso-38302546.firebaseio.com",
+    "project_id": "goconso-38302546",
+    "storage_bucket": "goconso-38302546.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267755188052:android:bb78caa6c1ed0290",
+        "android_client_info": {
+          "package_name": "dev.pushkar.goconso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "267755188052-qnlsobkf139jek86ttapokvv2evra19j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.pushkar.goconso",
+            "certificate_hash": "cd47555224e72c9e916cb373c8fbc186f5e149dc"
+          }
+        },
+        {
+          "client_id": "267755188052-hal72140h2oe5puqb3qgl8uo1bnfrha6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj0UXeVuZNQTnvqwlpU33_la_4XXNBSSE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "267755188052-hal72140h2oe5puqb3qgl8uo1bnfrha6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

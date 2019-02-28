@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="branches">
+        <item>ARCH</item>
+        <item>CHEM</item>
+        <item>CIVIL</item>
+        <item>CSE</item>
+        <item>ECE</item>
+        <item>ECell</item>
+        <item>EEE</item>
+        <item>MECH</item>
+        <item>MIN</item>
+    </string-array>
+
+    <string name="app_name">GoConso</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_play_tap_tiles">PLAY!</string>
+    <string name="button_interupt">Cancel Timer</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="tile_0">tile_0</string>
+    <string name="tile_1">tile_1</string>
+    <string name="tile_2">tile_2</string>
+    <string name="tile_3">tile_3</string>
+    <string name="tile_4">tile_4</string>
+    <string name="tile_5">tile_5</string>
+    <string name="tile_6">tile_6</string>
+    <string name="tile_7">tile_7</string>
+
+    <dimen name="tile_size">68dp</dimen>
+    <dimen name="tap_tile_size">75dp</dimen>
+    <dimen name="tile_padding">10dp</dimen>
+    <dimen name="inter_tile_padding">3dp</dimen>
+    <dimen name="tap_icon">60dp</dimen>
+
+
+    <string name="title_activity_splash_screen">GoConso</string>
+    <string name="app_title">APP TITLE</string>
+    <string name="app_image">APP IMAGE</string>
+    <string name="info">Info</string>
+    <string name="scores">Achievements</string>
+    <string name="play">PLAY</string>
+    <string name="info_sheet_1">First Name</string>
+    <string name="info_sheet_2">Last Name</string>
+    <string name="info_sheet_btn">Submit</string>
+    <string name="info_sheet_0">Profile</string>
+    <string name="score">Score: %d</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="icon">icon</string>
+    <string name="all_scores">All time: %d \nToday\'s: %d</string>
+    <string name="signed_out_greeting">Hello, anonymous user (not signed in)!</string>
+    <string name="achievements_exception">There was an issue communicating with achievements.</string>
+    <string name="leaderboards_exception">There was an issue communicating with leaderboards.</string>
+    <string name="players_exception">There was an issue communicating with players.</string>
+    <string name="status_exception_error">%1$s (status %2$d). %3$s.</string>
+    <string name="easy_mode_explanation">You\'re playing in easy mode, so you got the score you requested! Wasn\'t that
+        easy?
+    </string>
+    <string name="hard_mode_explanation">You\'re playing in hard mode, so you only got half the score you requested!
+        Isn\'t this game hard?
+    </string>
+    <string name="achievement_prime_toast_text">Prime score!</string>
+    <string name="achievement_arrogant_toast_text">Arrogant (requested maximum score)!</string>
+    <string name="achievement_humble_toast_text">Humble! (requested 0 score)</string>
+    <string name="achievement_leet_toast_text">L33t! (got 1337 score)</string>
+    <string name="achievement">Achievement</string>
+    <string name="your_progress_will_be_uploaded">Your existing achievements and score will be uploaded shortly.
+    </string>
+    <string name="what_score_do_you_deserve">What score do you think you deserve?</string>
+    <string name="initial_input">0000</string>
+    <string name="digit0">0</string>
+    <string name="digit1">1</string>
+    <string name="digit2">2</string>
+    <string name="digit3">3</string>
+    <string name="digit4">4</string>
+    <string name="digit5">5</string>
+    <string name="digit6">6</string>
+    <string name="digit7">7</string>
+    <string name="digit8">8</string>
+    <string name="digit9">9</string>
+    <string name="clear">Clear</string>
+    <string name="ok">OK</string>
+    <string name="choose_difficulty">Choose a difficulty to play:</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="see_your_progress">See your progress:</string>
+    <string name="show_achievements">Show Achievements</string>
+    <string name="show_leaderboards">Show Leaderboards</string>
+    <string name="sign_in_why">Sign in with Google to share your scores and achievements with your friends.</string>
+    <string name="you_are_signed_in">You are signed in with Google.</string>
+    <string name="sign_out">Sign out</string>
+    <string name="you_win">You win! Your score is:</string>
+    <string name="sign_in_to_upload_this_score">Sign in now to upload this score, save your achievements and share your
+        progress with friends.
+    </string>
+    <string name="signin_other_error">There was an issue with sign in. Please try again later.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="returnx">Return to main menu</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="replay">Play Again</string>
+    <string name="scorex">Score: %d\n Daily Best: %d\n All-Time Best: %d\n</string>
+    <string name="unlocked">Multiplayer Mode Unlocked!</string>
+    <string name="multiplayer">Multiplayer</string>
+    <string name="title_activity_scoreboard">Scoreboard</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_info">Info</string>
+    <string name="title_daily">Daily</string>
+    <string name="title_all_time">All Time</string>
+    <string name="ds">Daily Scoreboard</string>
+    <string name="ats">All Time Scoreboard</string>
+    <string name="bd_name">%d. %s</string>
+    <string name="bd_score">%d</string>
+    <string name="button_lb">Scoreboard</string>
+
+</resources>
