@@ -5,7 +5,7 @@
           package="dev.pushkar.goconso">
 
     <dist:module dist:instant="true"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher_tall"
@@ -13,6 +13,15 @@
             android:roundIcon="@mipmap/ic_launcher_circle"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat">
+        <service
+                android:name=".MyFirebaseInstanceIdService"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <activity
                 android:name=".Info"
                 android:label="@string/title_activity_info"
@@ -36,6 +45,20 @@
         <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@mipmap/ic_launcher_circle"/>
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="ec04498f967b0e4a4a6c524a24b621bea8c4d160" />
+
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/primaryLightColor"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -51,6 +74,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

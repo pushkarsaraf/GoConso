@@ -5,14 +5,14 @@ package dev.pushkar.goconso
  */
 
 class Update {
-    lateinit var img: String
-    lateinit var dt: String
+    var img: String = ""
+    var dt: String = ""
     var sel: Boolean = false
     lateinit var hl: String
     var pri: Int = 0
     var btn: Boolean = false
-    lateinit var btnTxt: String
-    lateinit var url: String
+    var btnTxt: String = ""
+    var url: String = ""
 
     constructor() {
 

@@ -37,6 +37,7 @@
     <string name="app_title">APP TITLE</string>
     <string name="app_image">APP IMAGE</string>
     <string name="info">Info</string>
+    <string name="scoreboard">Scoreboard</string>
     <string name="scores">Achievements</string>
     <string name="play">PLAY</string>
     <string name="info_sheet_1">First Name</string>
@@ -114,5 +115,29 @@
     <string name="bd_name">%d. %s</string>
     <string name="bd_score">%d</string>
     <string name="button_lb">Scoreboard</string>
+    <string name="log_token">Log Token</string>
 
+    <string name="msg_subscribed">Subscribed to weather topic</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <!--
+        This is the name that users will see when interacting with this channel.
+        It should describe the category of notifications that will be sent through this channel
+     -->
+    <string name="default_notification_channel_name" translatable="true">Weather</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to weather topic</string>
+    <string name="fcm_message">FCM Message</string>
+    <string name="tos">Terms of Service</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="profile">Profile</string>
+    <string name="ud_title">Upgrade to Full Version?</string>
+    <string name="ud_message">Full version requires you to install google play games :P</string>
+    <string name="ud_ok">Install</string>
+    <string name="cancel">Cancel</string>
+    <string name="u_full">This feature is available in full version</string>
+    <string name="u_upgrade">Upgrade?</string>
+    <string name="full">isFull</string>
+    <string name="fnerror">Please enter a valid value</string>
+    <string name="uid">UID</string>
 </resources>

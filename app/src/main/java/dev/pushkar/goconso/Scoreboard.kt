@@ -27,13 +27,13 @@ class Scoreboard : AppCompatActivity() {
         when (item.itemId) {
             R.id.navigation_home -> {
                 message.text = getString(R.string.ds)
-                daily.visibility= View.VISIBLE
-                all_time.visibility = View.GONE
+                daily.visibility= View.GONE
+                all_time.visibility = View.VISIBLE
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                daily.visibility= View.GONE
-                all_time.visibility = View.VISIBLE
+                daily.visibility= View.VISIBLE
+                all_time.visibility = View.GONE
                 message.text = getString(R.string.ats)
                 return@OnNavigationItemSelectedListener true
             }
@@ -46,6 +46,9 @@ class Scoreboard : AppCompatActivity() {
         setContentView(R.layout.activity_scoreboard)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         db = FirebaseFirestore.getInstance()
+        message.text = getString(R.string.ds)
+        daily.visibility= View.GONE
+        all_time.visibility = View.VISIBLE
         init()
     }
 

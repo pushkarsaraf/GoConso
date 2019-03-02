@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 28
@@ -47,13 +47,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.4.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'
-
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.google.firebase:firebase-perf:16.2.3'
     //    implementation 'com.wrapp.floatlabelededittext:library:0.0.6'
     implementation 'com.vincentbrison.openlibraries.android:foldablelayout:0.0.1@aar'
     implementation 'nl.dionsegijn:konfetti:1.1.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

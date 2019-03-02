@@ -1,5 +1,8 @@
 package dev.pushkar.goconso
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -21,30 +24,30 @@ import kotlinx.android.synthetic.main.main_activity.*
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.crashlytics.android.Crashlytics
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesUtil
+import com.google.android.gms.common.api.GoogleApiActivity
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PlayGamesAuthProvider
+import com.google.firebase.iid.FirebaseInstanceId
+import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainActivity : AppCompatActivity(),
     MainFragment.OnFragmentInteractionListener,
     GameOver.OnFragmentInteractionListener,
     GamePlay.OnFragmentInteractionListener {
-
-    override fun getAchievements() {
-        checkForAchievements(score)
-        updateLeaderboards(score)
-        pushAccomplishments()
-    }
-
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     private var mAchievementsClient: AchievementsClient? = null
     private var mLeaderboardsClient: LeaderboardsClient? = null
@@ -90,17 +93,94 @@ class MainActivity : AppCompatActivity(),
         bgAudioPlayer.start()
     }
 
+    override fun getAchievements() {
+        checkForAchievements(score)
+        updateLeaderboards(score)
+        pushAccomplishments()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        FirebaseApp.initializeApp(this)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitNow()
         }
-        init()
+        FirebaseApp.initializeApp(this)
+        Fabric.with(this, Crashlytics())
         Toast.makeText(this, "V1", Toast.LENGTH_LONG).show()
+        setNotif()
+        sp = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+        implementFullOrLite()
+    }
+
+    private lateinit var sp: SharedPreferences
+    private fun implementFullOrLite(){
+        sp.contains(getString(R.string.full)).let{
+            if(it){
+                sp.getBoolean(getString(R.string.full),true).let{ isFullVersion ->
+                    MainActivity.isFullVersion = isFullVersion
+                    if(isFullVersion){
+                        handleFull()
+                    }
+                }
+            } else {
+                showUpgradeDialog()
+            }
+        }
+    }
+
+    private fun handleFull(){
+        init()
+    }
+
+    override fun showUpgradeDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.ud_title))
+        builder.setMessage(getString(R.string.ud_message))
+        builder.setPositiveButton(getString(R.string.ud_ok)){ dialogInterface, i ->
+            sp.edit().putBoolean("isFull", true).apply()
+            dialogInterface.dismiss()
+            handleFull()
+            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        builder.setNegativeButton(getString(R.string.cancel)){ dialogInterface, i ->
+            sp.edit().putBoolean("isFull", false).apply()
+            dialogInterface.dismiss()
+        }
+        builder.create().show()
+    }
+
+    private fun setNotif() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            val channelId = getString(R.string.default_notification_channel_id)
+            val channelName = getString(R.string.default_notification_channel_name)
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(
+                NotificationChannel(
+                    channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW
+                )
+            )
+        }
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d(TAG, msg)
+                //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            })
     }
 
     private fun init() {
@@ -125,8 +205,8 @@ class MainActivity : AppCompatActivity(),
             .addOnSuccessListener { intent -> startActivityForResult(intent, RC_LEADERBOARD_UI) }
     }
 
-    override fun showScoreboard(){
-        startActivity(Intent(this,Scoreboard::class.java))
+    override fun showScoreboard() {
+        startActivity(Intent(this, Scoreboard::class.java))
     }
 
     private fun isSignedIn(): Boolean {
@@ -156,7 +236,9 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume()")
-        signInSilently()
+        if(isFullVersion){
+            signInSilently()
+        }
     }
 
     override fun signOut() {
@@ -210,7 +292,7 @@ class MainActivity : AppCompatActivity(),
             mOutbox.mLeetAchievement = true
             achievementToast(getString(R.string.achievement_leet_toast_text))
         }
-        if (finalScore == 2){
+        if (finalScore == 2) {
             mOutbox.multiplayerAchievement = true
             achievementToast(getString(R.string.unlocked))
         }
@@ -232,10 +314,10 @@ class MainActivity : AppCompatActivity(),
         if (!isSignedIn()) {
             return
         }
-        if (mOutbox.multiplayerAchievement){
+        if (mOutbox.multiplayerAchievement) {
             mAchievementsClient!!.unlock(getString(R.string.achievement_dont_play_alone))
             mOutbox.multiplayerAchievement = false
-            Data.localData.edit().putBoolean("multiplayer",true).apply()
+            Data.localData.edit().putBoolean("multiplayer", true).apply()
         }
         if (mOutbox.mPrimeAchievement) {
             mAchievementsClient!!.unlock(getString(R.string.achievement_prime))
@@ -253,7 +335,7 @@ class MainActivity : AppCompatActivity(),
             mAchievementsClient!!.unlock(getString(R.string.achievement_leet))
             mOutbox.mLeetAchievement = false
         }
-        Toast.makeText(this,"${mOutbox.mBoredSteps}",Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "${mOutbox.mBoredSteps}", Toast.LENGTH_LONG).show()
         if (mOutbox.mBoredSteps > 0) {
             mAchievementsClient!!.increment(
                 getString(R.string.achievement_really_bored),
@@ -306,7 +388,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun onConnected(googleSignInAccount: GoogleSignInAccount?) {
         Log.d(TAG, "onConnected(): connected to Google APIs")
-        if(googleSignInAccount!=null) {
+        if (googleSignInAccount != null) {
             mAchievementsClient = Games.getAchievementsClient(this, googleSignInAccount)
             mLeaderboardsClient = Games.getLeaderboardsClient(this, googleSignInAccount)
             mEventsClient = Games.getEventsClient(this, googleSignInAccount)
@@ -393,6 +475,7 @@ class MainActivity : AppCompatActivity(),
         private const val RC_LEADERBOARD_UI = 9004
         var confetti: Boolean = false
         var score: Int = 0
+        var isFullVersion = false
     }
 }
 

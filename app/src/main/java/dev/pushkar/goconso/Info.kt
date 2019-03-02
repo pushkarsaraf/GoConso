@@ -1,6 +1,7 @@
 package dev.pushkar.goconso
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,13 +22,16 @@ class Info : Activity() {
         query.get().addOnSuccessListener {
             it.forEach { doc ->
                 updates.add(doc.toObject(Update::class.java))
-                Toast.makeText(this, "${doc.toObject(Update::class.java).pri}",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "${doc.toObject(Update::class.java).pri}", Toast.LENGTH_LONG).show()
             }
+            val adapter = PhotoAdapter(updates, this)
+            recycler_view.adapter = adapter
+            adapter.notifyDataSetChanged()
+            recycler_view.layoutManager = LinearLayoutManager(this)
         }
+    }
 
-        val adapter = PhotoAdapter(updates, this)
-        recycler_view.adapter = adapter
-        adapter.notifyDataSetChanged()
-        recycler_view.layoutManager = LinearLayoutManager(this)
+    override fun onBackPressed(){
+        startActivity(Intent(this,MainActivity::class.java))
     }
 }

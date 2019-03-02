@@ -3,8 +3,6 @@ package dev.pushkar.goconso.ui.main
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.Color
-import android.graphics.Typeface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
@@ -16,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.games.Games
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.pushkar.goconso.Data
@@ -27,7 +24,6 @@ import dev.pushkar.goconso.HighScore
 import dev.pushkar.goconso.MainActivity
 import dev.pushkar.goconso.R
 import kotlinx.android.synthetic.main.fragment_game_over.*
-import kotlinx.android.synthetic.main.info_sheet.*
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
@@ -63,47 +59,35 @@ class GameOver : Fragment() {
     }
 
     private fun init() {
-        if (GoogleSignIn.getLastSignedInAccount(activity!!) != null) {
-            Games.getGamesClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity!!)!!).setViewForPopups(view!!)
-        } else {
-            activity!!.finish()
-        }
         bestScore = localData.getInt(KEY_TT_BEST_SCORE, 0)
         dailyBestScore = localData.getInt(KEY_TT_DAILY_BEST_SCORE, 0)
-        try {
-            val highScore1: HighScore =
-                if ("${Data.localData.getString(
-                        getString(R.string.info_sheet_1), ""
-                    )}${Data.localData.getString(getString(R.string.info_sheet_2), "")}".isBlank()
-                ) {
-                    HighScore(dailyBestScore, GoogleSignIn.getLastSignedInAccount(activity!!)!!.displayName!!)
+
+        if(MainActivity.isFullVersion) {
+            try {
+                if (GoogleSignIn.getLastSignedInAccount(activity!!) != null) {
+                    Games.getGamesClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity!!)!!)
+                        .setViewForPopups(view!!)
                 } else {
-                    HighScore(
-                        dailyBestScore, "${Data.localData.getString(
-                            getString(R.string.info_sheet_1),
-                            ""
-                        )}${Data.localData.getString(getString(R.string.info_sheet_2), "")}"
-                    )
+                    activity!!.finish()
                 }
-            db.collection("Daily").document(GoogleSignIn.getLastSignedInAccount(activity!!)!!.id!!).set(highScore1)
-            val highScore2: HighScore =
-                if ("${Data.localData.getString(
-                        getString(R.string.info_sheet_1), ""
-                    )}${Data.localData.getString(getString(R.string.info_sheet_2), "")}".isBlank()
-                ) {
-                    HighScore(bestScore, GoogleSignIn.getLastSignedInAccount(activity!!)!!.displayName!!)
-                } else {
-                    HighScore(
-                        bestScore, "${Data.localData.getString(
-                            getString(R.string.info_sheet_1),
-                            ""
-                        )}${Data.localData.getString(getString(R.string.info_sheet_2), "")}"
-                    )
+                listener!!.getAchievements()
+                pushScores()
+                btn_lb.setOnClickListener {
+                    listener!!.showLeaderboard()
                 }
-            db.collection("AllTime").document(GoogleSignIn.getLastSignedInAccount(activity!!)!!.id!!).set(highScore2)
-        } catch (ex: Exception) {
-            Snackbar.make(view!!, "Please fill your name  in profile menu  to appear on scoreboards", Snackbar.LENGTH_LONG).show()
+            } catch (ex: Exception){
+                Toast.makeText(activity!!,"Please restart the app! :P", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            pushScores()
+            btn_lb.setOnClickListener {
+                Snackbar.make(view!!.rootView,getString(R.string.u_full),Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.u_upgrade)) {
+                        listener!!.showUpgradeDialog()
+                    }.show()
+            }
         }
+
         this.view!!.isFocusableInTouchMode = true
         this.view!!.requestFocus()
         this.view!!.setOnKeyListener { _, i, _ ->
@@ -123,7 +107,6 @@ class GameOver : Fragment() {
                 Toast.makeText(activity!!, "Incompatible device", Toast.LENGTH_LONG).show()
             }
         }
-        listener!!.getAchievements()
         viewKonfetti = view!!.findViewById(R.id.viewKonfetti)
         if (MainActivity.confetti) {
             Toast.makeText(activity!!, "New High Score!", Toast.LENGTH_LONG).show()
@@ -140,14 +123,48 @@ class GameOver : Fragment() {
         }
 
         tv_details.text = getString(R.string.scorex, MainActivity.score, dailyBestScore, bestScore)
-        btn_lb.setOnClickListener {
-            listener!!.showLeaderboard()
-        }
         btn_return.setOnClickListener {
             fragmentManager!!.beginTransaction().replace(id, MainFragment(), "MF").commit()
         }
         btn_replay.setOnClickListener {
             fragmentManager!!.beginTransaction().replace(id, GamePlay(), "GP").commit()
+        }
+    }
+
+    private fun pushScores(){
+        val uid = Data.localData.getString(getString(R.string.uid),"ANON")!!
+        if(uid!="") {
+            val highScore1: HighScore =
+                if ("${Data.localData.getString(getString(R.string.info_sheet_1), "")}${Data.localData.getString(
+                        getString(R.string.info_sheet_2),
+                        ""
+                    )}".isBlank()
+                ) {
+                    HighScore(dailyBestScore, uid)
+                } else {
+                    HighScore(
+                        dailyBestScore, "${Data.localData.getString(
+                            getString(R.string.info_sheet_1),
+                            ""
+                        )}_${Data.localData.getString(getString(R.string.info_sheet_2), "")}"
+                    )
+                }
+            db.collection("Daily").document(uid).set(highScore1)
+            val highScore2: HighScore =
+                if ("${Data.localData.getString(
+                        getString(R.string.info_sheet_1), ""
+                    )}${Data.localData.getString(getString(R.string.info_sheet_2), "")}".isBlank()
+                ) {
+                    HighScore(bestScore, uid)
+                } else {
+                    HighScore(
+                        bestScore, "${Data.localData.getString(
+                            getString(R.string.info_sheet_1),
+                            ""
+                        )}_${Data.localData.getString(getString(R.string.info_sheet_2), "")}"
+                    )
+                }
+            db.collection("AllTime").document(uid).set(highScore2)
         }
     }
 
@@ -162,8 +179,8 @@ class GameOver : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
         fun getAchievements()
         fun showLeaderboard()
+        fun showUpgradeDialog()
     }
 }

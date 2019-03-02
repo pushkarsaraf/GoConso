@@ -79,10 +79,12 @@ class GamePlay : Fragment() {
     }
 
     private fun initialize() {
-        if(GoogleSignIn.getLastSignedInAccount(activity!!)!=null) {
-            Games.getGamesClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity!!)!!).setViewForPopups(view!!)
-        } else {
-            activity!!.finish()
+        if(MainActivity.isFullVersion){
+            if(GoogleSignIn.getLastSignedInAccount(activity!!)!=null) {
+                Games.getGamesClient(activity!!, GoogleSignIn.getLastSignedInAccount(activity!!)!!).setViewForPopups(view!!)
+            } else {
+                activity!!.finish()
+            }
         }
         this.view!!.isFocusableInTouchMode= true
         this.view!!.requestFocus()
@@ -259,39 +261,20 @@ class GamePlay : Fragment() {
             }
             enableTapTiles(false)
             scoreView.text = getString(R.string.score,score)
-
-            val today = Data.calender.get(Calendar.DAY_OF_MONTH)
-//            val lastday = Data.localData.getInt(Data.KEY_TODAY, 0)
             val bestScore = Data.localData.getInt(Data.KEY_TT_BEST_SCORE, 0)
             val dailyBestScore = Data.localData.getInt(Data.KEY_TT_DAILY_BEST_SCORE, 0)
             val editor = Data.localData.edit()
             confetti = false
             if (bestScore < score) {
                 editor.putInt(Data.KEY_TT_BEST_SCORE, score)
-//                val latest = HighScore(-1 * score, username)
-//                allTimeRef.setValue(latest)
                 confetti = true
-            } else {
-//                val latest = HighScore(-1 * bestScore, username)
-//                allTimeRef.setValue(latest)
-
             }
             when {
-//                lastday < today -> {
-//                    editor.putInt(Data.KEY_TODAY, today)
-//                    editor.putInt(Data.KEY_TT_DAILY_BEST_SCORE, score)
-//                    val latest1 = HighScore(-1 * score, username)
-//                    highScoreRef.setValue(latest1)
-//                }
                 dailyBestScore < score -> {
-
                     editor.putInt(Data.KEY_TT_DAILY_BEST_SCORE, score)
-//                    val latest1 = HighScore(-1 * score, username)
-//                    highScoreRef.setValue(latest1)
                 }
-                else -> {
-//                    val latest1 = HighScore(-1 * dailyBestScore, username)
-//                    highScoreRef.setValue(latest1)
+                bestScore < score -> {
+                    editor.putInt(Data.KEY_TT_BEST_SCORE, score)
                 }
             }
             editor.apply()

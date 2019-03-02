@@ -10,15 +10,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.squareup.picasso.Picasso
 import worldline.com.foldablelayout.FoldableLayout
 
 /**
  * TODO: Add a class header comment!
  */
-class PhotoAdapter(private val mDataSet: MutableList<Update>, var mContext: Context) : RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>() {
+class PhotoAdapter(private val mDataSet: MutableList<Update>, private var mContext: Context) : RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>() {
     private val mFoldStates = mutableMapOf<Int, Boolean>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
@@ -28,28 +26,26 @@ class PhotoAdapter(private val mDataSet: MutableList<Update>, var mContext: Cont
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         if (mDataSet[position].sel) {
             val path = mDataSet[position].img
-
-
-            // Bind data
-            Picasso.get().load(path).into(holder.mImageViewCover)
-            Picasso.get().load(path).into(holder.mImageViewDetail)
-
+            val picasso = Picasso.Builder(mContext).build()
+            picasso.isLoggingEnabled = true
+            picasso.load(path).into(holder.mImageViewCover)
+            picasso.load(path).into(holder.mImageViewDetail)
         } else {
             val details = mDataSet[position].dt
             val hl = mDataSet[position].hl
-            holder.mTextViewDetail!!.text = details
-            holder.mTextViewDetail!!.visibility = View.VISIBLE
-            holder.mTextHeader!!.visibility = View.VISIBLE
-            holder.mTextHeader!!.text = hl
+            holder.mTextViewDetail.text = details
+            holder.mTextViewDetail.visibility = View.VISIBLE
+            holder.mTextHeader.visibility = View.VISIBLE
+            holder.mTextHeader.text = hl
         }
-        holder.mTextViewCover!!.text = mDataSet[position].hl
+        holder.mTextViewCover.text = mDataSet[position].hl
 
         if (mDataSet[position].btn) {
-            holder.mButtonShare!!.visibility = View.VISIBLE
-            holder.mButtonShare!!.text = mDataSet[position].btnTxt
+            holder.mButtonShare.visibility = View.VISIBLE
+            holder.mButtonShare.text = mDataSet[position].btnTxt
         } else {
-            holder.mButtonShare!!.visibility = View.GONE
-            holder.mButtonShare!!.text = mDataSet[position].btnTxt
+            holder.mButtonShare.visibility = View.GONE
+            holder.mButtonShare.text = mDataSet[position].btnTxt
         }
 
         // Bind state
@@ -69,12 +65,12 @@ class PhotoAdapter(private val mDataSet: MutableList<Update>, var mContext: Cont
 
         if (mDataSet[position].btn) {
 
-            holder.mButtonShare!!.setOnClickListener {
+            holder.mButtonShare.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mDataSet[position].url))
                 mContext.startActivity(intent)
             }
         } else {
-            holder.mButtonShare!!.visibility = View.GONE
+            holder.mButtonShare.visibility = View.GONE
         }
         holder.mFoldableLayout.setOnClickListener {
             if (holder.mFoldableLayout.isFolded) {
@@ -117,30 +113,21 @@ class PhotoAdapter(private val mDataSet: MutableList<Update>, var mContext: Cont
     }
 
     class PhotoViewHolder(var mFoldableLayout: FoldableLayout) : RecyclerView.ViewHolder(mFoldableLayout) {
-        @BindView(R.id.imageview_cover)
-        var mImageViewCover: ImageView? = null
-
-
-        @BindView(R.id.pushkar_header)
-        var mTextHeader: TextView? = null
-
-        @BindView(R.id.imageview_detail)
-        var mImageViewDetail: ImageView? = null
-
-        @BindView(R.id.pushkar_detail)
-        var mTextViewDetail: TextView? = null
-
-        @BindView(R.id.textview_cover)
-        var mTextViewCover: TextView? = null
-
-        @BindView(R.id.share_button)
-        var mButtonShare: Button? = null
+        val mImageViewCover: ImageView
+        val mTextHeader: TextView
+        val mImageViewDetail: ImageView
+        val mTextViewDetail: TextView
+        val mTextViewCover: TextView
+        val mButtonShare: Button
 
         init {
             mFoldableLayout.setupViews(R.layout.list_item_cover, R.layout.list_item_detail, R.dimen.card_cover_height, itemView.context)
-            ButterKnife.bind(this, mFoldableLayout)
+            mImageViewCover = mFoldableLayout.findViewById(R.id.imageview_cover)
+            mTextHeader = mFoldableLayout.findViewById(R.id.pushkar_header)
+            mImageViewDetail = mFoldableLayout.findViewById(R.id.imageview_detail)
+            mTextViewDetail = mFoldableLayout.findViewById(R.id.pushkar_detail)
+            mTextViewCover = mFoldableLayout.findViewById(R.id.textview_cover)
+            mButtonShare = mFoldableLayout.findViewById(R.id.share_button)
         }
     }
-
-
 }

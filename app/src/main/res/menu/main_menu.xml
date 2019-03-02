@@ -5,10 +5,25 @@
             android:orderInCategory="300"
             android:title="@string/multiplayer"
             android:icon="@drawable/ic_plus_one_black_24dp"
-            app:showAsAction="always"/>
+            app:showAsAction="ifRoom"/>
     <item
             android:id="@+id/info"
             android:title="@string/title_activity_info"
+            app:showAsAction="never"
+    />
+    <item
+            android:id="@+id/profile"
+            android:title="@string/profile"
+            app:showAsAction="never"
+    />
+    <item
+            android:id="@+id/tos"
+            android:title="@string/tos"
+            app:showAsAction="never"
+    />
+    <item
+            android:id="@+id/privacy"
+            android:title="@string/privacy"
             app:showAsAction="never"
     />
     <item

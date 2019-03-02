@@ -28,7 +28,7 @@
             android:id="@+id/button_lb"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/info"
+            android:text="@string/scoreboard"
             app:layout_constraintRight_toLeftOf="@id/button_leaderboard"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/button_play_tap_tiles"
